@@ -11,7 +11,7 @@ import java.util.List;
  * contenido.
  */
 public class ReadText {
-    
+
     private String filePath; // Ruta del archivo a leer
 
     /**
@@ -23,8 +23,7 @@ public class ReadText {
         this.filePath = filePath;
     }
 
-  
-     public  List<String> leerArchivo(String archivo) {
+    public List<String> leerArchivo(String archivo) {
         List<String> lineas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
