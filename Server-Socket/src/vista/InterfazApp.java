@@ -9,9 +9,8 @@ public class InterfazApp extends JFrame {
     private PanelSeleccionar pnlSeleccionar; // Panel para seleccionar el archivo
     private Controlador controlador; // Controlador para manejar la lógica del secuenciador
 
-    
     public InterfazApp() {
-        setTitle("Secuenciador");
+        setTitle("Emisor");
         setSize(380, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -28,9 +27,8 @@ public class InterfazApp extends JFrame {
         setVisible(true);
     }
 
- 
     public static void main(String[] args) {
         InterfazApp main = new InterfazApp();
     }
-    
+
 }

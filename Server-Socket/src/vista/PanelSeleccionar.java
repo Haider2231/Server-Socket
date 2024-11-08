@@ -61,7 +61,7 @@ public class PanelSeleccionar extends JPanel {
             if (resultado == JFileChooser.APPROVE_OPTION) {
                 // Obtener el archivo seleccionado
                 archivoSeleccionado = fileChooser.getSelectedFile().getAbsolutePath();
-                //    controlador.procesarArchivo(archivoSeleccionado); // Llamar al controlador para procesar el archivo
+                controlador.procesarArchivo(archivoSeleccionado); // Llamar al controlador para procesar el archivo
 
             }
         };

@@ -23,16 +23,19 @@ public class ReadText {
         this.filePath = filePath;
     }
 
-    public List<String> leerArchivo(String archivo) {
-        List<String> lineas = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                lineas.add(linea.trim());
+    public ArrayList<Character> leerArchivo(String archivo) {
+    ArrayList<Character> caracteres = new ArrayList<>();
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            // Agregar cada carácter de la línea a la lista
+            for (char c : linea.trim().toCharArray()) {
+                caracteres.add(c);
             }
-        } catch (IOException e) {
-            System.err.println("Error al leer el archivo: " + e.getMessage());
         }
-        return lineas;
+    } catch (IOException e) {
+        System.err.println("Error al leer el archivo: " + e.getMessage());
     }
+    return caracteres;
+}
 }
