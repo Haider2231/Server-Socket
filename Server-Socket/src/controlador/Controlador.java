@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import vista.PanelText;
 
 /**
  *
@@ -17,11 +18,13 @@ import javax.swing.JOptionPane;
  */
 public class Controlador {
 
-    private PanelSeleccionar pnlSeleccionar; // Panel de selección de archivo
+    private PanelSeleccionar pnlSeleccionar;
+    private PanelText pnlText;
 
-    public Controlador(PanelSeleccionar pnlSeleccionar) {
+    public Controlador(PanelSeleccionar pnlSeleccionar, PanelText pnlText) {
         this.pnlSeleccionar = pnlSeleccionar;
         this.pnlSeleccionar.setControlador(this); // Inyectar el controlador en el panel
+        this.pnlText = pnlText;
     }
 
     public void procesarArchivo(String archivoSeleccionado) {
@@ -42,8 +45,10 @@ public class Controlador {
                 int code = lwz.compress3(se);
                 if (code != -1) {
                    out.writeObject(code);
-                  
-                    JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + code);
+                 
+                   pnlText.addMessage(code);
+                   
+                    
                 }
             }
 
@@ -52,7 +57,7 @@ public class Controlador {
             if (lastCode != -1) {
                 out.writeObject(lastCode);
                 out.flush();
-                JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + lastCode);
+                pnlText.addMessage(lastCode);
             }
 
         } catch (Exception ex) {
