@@ -37,6 +37,11 @@ public class LWZ {
         }
     }
 
+    
+    public static int getFinalCode() {
+        return !pe.isEmpty() ? diccionario.get(pe) : -1;
+    }
+    
     // Método para descomprimir una lista de códigos
     public static String decompress(List<Integer> input) {
         Map<Integer, String> dictionary = new HashMap<>();

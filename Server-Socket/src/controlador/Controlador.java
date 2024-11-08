@@ -35,8 +35,14 @@ public class Controlador {
                     JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + code);
 
                 }
+           
             }
-            
+                 int lastCode = LWZ.getFinalCode();
+                if (lastCode != -1) {
+                
+                JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + lastCode);  
+                }
+
         } catch (Exception ex) {
             // Manejar errores en la lectura del archivo
             JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage(),
