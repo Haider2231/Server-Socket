@@ -1,10 +1,15 @@
 package controlador;
 
-import java.util.ArrayList;
+
 import mundo.LWZ;
 import javax.swing.JOptionPane;
 import mundo.ReadText;
 import vista.PanelSeleccionar;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,9 +27,13 @@ public class Controlador {
     public void procesarArchivo(String archivoSeleccionado) {
         ReadText readText = new ReadText(archivoSeleccionado); // Crear instancia para leer el archivo
         LWZ lwz = new LWZ();
-        try {
+      
+        try (ServerSocket serverSocket = new ServerSocket(5000);
+                Socket clientSocket = serverSocket.accept();
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());) {
+
+            // Leer archivo y procesar datos
             ArrayList<Character> list = readText.leerArchivo(archivoSeleccionado);
-            // Inicializar el diccionario una vez
             lwz.initializeDictionary();
 
             // Bucle para recorrer todos los caracteres
@@ -32,22 +41,24 @@ public class Controlador {
                 char se = list.get(i);
                 int code = lwz.compress3(se);
                 if (code != -1) {
+                   out.writeObject(code);
+                  
                     JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + code);
-
                 }
-           
             }
-                 int lastCode = LWZ.getFinalCode();
-                if (lastCode != -1) {
-                
-                JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + lastCode);  
-                }
+
+            // Enviar el último código si queda un prefijo pendiente
+            int lastCode = LWZ.getFinalCode();
+            if (lastCode != -1) {
+                out.writeObject(lastCode);
+                out.flush();
+                JOptionPane.showMessageDialog(null, "Código comprimido enviado: " + lastCode);
+            }
 
         } catch (Exception ex) {
-            // Manejar errores en la lectura del archivo
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + ex.getMessage(),
+            JOptionPane.showMessageDialog(null, "Error al enviar datos por socket: " + ex.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }
+
 }
