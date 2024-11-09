@@ -47,4 +47,7 @@ public class PanelText  extends JPanel{
         txtArena.setCaretPosition(txtArena.getDocument().getLength()); 
     }
      
+    public void limpiar(){
+        txtArena.setText("");
+    }
 }

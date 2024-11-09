@@ -48,24 +48,21 @@ public class PanelSeleccionar extends JPanel {
      *
      * @return ActionListener para manejar el evento de selección de archivo.
      */
-    private ActionListener createFileChooserListener() {
-        return (ActionEvent e) -> {
-            JFileChooser fileChooser = new JFileChooser();
-            // Filtrar solo archivos de texto
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt", "text", "in", "out");
-            fileChooser.setFileFilter(filter);
+   private ActionListener createFileChooserListener() {
+    return (ActionEvent e) -> {
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt", "text", "in", "out");
+        fileChooser.setFileFilter(filter);
 
-            // Abrir el cuadro de diálogo para seleccionar archivos
-            int resultado = fileChooser.showOpenDialog(null);
+        int resultado = fileChooser.showOpenDialog(null);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            archivoSeleccionado = fileChooser.getSelectedFile().getAbsolutePath();
+            controlador.archivoSeleccionado(archivoSeleccionado); // Notifica al controlador
+          //  System.out.println("Archivo seleccionado: " + archivoSeleccionado);
+        }
+    };
+}
 
-            if (resultado == JFileChooser.APPROVE_OPTION) {
-                // Obtener el archivo seleccionado
-                archivoSeleccionado = fileChooser.getSelectedFile().getAbsolutePath();
-                controlador.procesarArchivo(archivoSeleccionado); // Llamar al controlador para procesar el archivo
-
-            }
-        };
-    }
 
     /**
      * Devuelve la ruta del archivo seleccionado.

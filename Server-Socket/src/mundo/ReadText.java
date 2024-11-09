@@ -24,18 +24,15 @@ public class ReadText {
     }
 
     public ArrayList<Character> leerArchivo(String archivo) {
-    ArrayList<Character> caracteres = new ArrayList<>();
-    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            // Agregar cada carácter de la línea a la lista
-            for (char c : linea.trim().toCharArray()) {
-                caracteres.add(c);
+        ArrayList<Character> caracteres = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            int c;
+            while ((c = br.read()) != -1) {
+                caracteres.add((char) c);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    } catch (IOException e) {
-        System.err.println("Error al leer el archivo: " + e.getMessage());
+        return caracteres;
     }
-    return caracteres;
-}
 }
