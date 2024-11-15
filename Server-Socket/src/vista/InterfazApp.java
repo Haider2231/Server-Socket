@@ -4,12 +4,20 @@ import java.awt.Color;
 import javax.swing.JFrame;
 import controlador.Controlador;
 
+/**
+ * InterfazApp es la ventana principal de la aplicación del servidor.
+ * Configura los paneles de selección y visualización de texto, y crea el controlador para manejar la lógica.
+ */
 public class InterfazApp extends JFrame {
 
     private PanelSeleccionar pnlSeleccionar;
     private PanelText pnlChat;
-    private Controlador controlador; 
-    
+    private Controlador controlador;
+
+    /**
+     * Constructor de InterfazApp.
+     * Configura los componentes de la interfaz y el controlador.
+     */
     public InterfazApp() {
         setTitle("Emisor");
         setSize(680, 290);
@@ -26,14 +34,16 @@ public class InterfazApp extends JFrame {
         pnlChat.setBounds(230, 10, 400, 230);
         add(pnlChat);
 
-        // Crear el controlador y conectar la vista
         controlador = new Controlador(pnlSeleccionar, pnlChat);
 
         setVisible(true);
     }
 
+    /**
+     * Método principal para iniciar la aplicación.
+     * @param args Argumentos de línea de comandos.
+     */
     public static void main(String[] args) {
-        InterfazApp main = new InterfazApp();
+        new InterfazApp();
     }
-
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vista;
 
 import java.awt.BorderLayout;
@@ -9,23 +5,24 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- *
- * @author ASUS
+ * PanelText representa el área de texto donde se muestran los códigos comprimidos enviados al cliente.
  */
-public class PanelText  extends JPanel{
-    
-     private JTextArea txtArena;
+public class PanelText extends JPanel {
 
+    private JTextArea txtArena;
+
+    /**
+     * Constructor de PanelText.
+     * Configura el área de texto y su diseño visual.
+     */
     public PanelText() {
-   
-       setLayout(new BorderLayout());
-        setBackground(new Color(255, 255, 255, 240)); // Fondo neumórfico
+        setLayout(new BorderLayout());
+        setBackground(new Color(255, 255, 255, 240));
 
         txtArena = new JTextArea();
         txtArena.setEditable(false);
@@ -42,12 +39,20 @@ public class PanelText  extends JPanel{
         
         add(scrlChat, BorderLayout.CENTER);
     }
+
+    /**
+     * Agrega un mensaje al área de texto.
+     * @param message El mensaje a agregar.
+     */
     public void addMessage(int message) {
         txtArena.append(message + "\n");
-        txtArena.setCaretPosition(txtArena.getDocument().getLength()); 
+        txtArena.setCaretPosition(txtArena.getDocument().getLength());
     }
      
-    public void limpiar(){
+    /**
+     * Limpia el área de texto.
+     */
+    public void limpiar() {
         txtArena.setText("");
     }
 }

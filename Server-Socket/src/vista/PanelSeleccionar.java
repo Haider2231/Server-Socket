@@ -3,7 +3,6 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -11,15 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import controlador.Controlador;
 
+/**
+ * PanelSeleccionar es el panel que contiene el botón para seleccionar un archivo.
+ * Muestra un cuadro de diálogo para que el usuario elija un archivo de texto.
+ */
 public class PanelSeleccionar extends JPanel {
 
-    private JButton btnSeleccionar; // Botón para seleccionar el archivo
-    private String archivoSeleccionado; // Ruta del archivo seleccionado
-    private Controlador controlador; // Referencia al controlador
+    private JButton btnSeleccionar;
+    private String archivoSeleccionado;
+    private Controlador controlador;
 
     /**
-     * Constructor de la clase PanelSeleccionar. Inicializa el botón y configura
-     * el diseño del panel.
+     * Constructor de la clase PanelSeleccionar. Inicializa el botón de selección y el diseño del panel.
      */
     public PanelSeleccionar() {
         setLayout(new BorderLayout());
@@ -28,46 +30,40 @@ public class PanelSeleccionar extends JPanel {
         btnSeleccionar.setBackground(new Color(174, 214, 241));
         btnSeleccionar.setForeground(Color.BLACK);
         btnSeleccionar.setFont(new Font("Arial", Font.PLAIN, 20));
-        btnSeleccionar.addActionListener(createFileChooserListener()); // Añadir el listener al botón
+        btnSeleccionar.addActionListener(createFileChooserListener());
 
         add(btnSeleccionar, BorderLayout.CENTER);
     }
 
     /**
-     * Método para inyectar el controlador en el panel.
-     *
-     * @param controlador El controlador que maneja la lógica de negocio.
+     * Inyecta el controlador en el panel para manejar la lógica.
+     * @param controlador Controlador de la aplicación.
      */
     public void setControlador(Controlador controlador) {
         this.controlador = controlador;
     }
 
     /**
-     * Crea un ActionListener para el botón de selección de archivos. Abre un
-     * cuadro de diálogo para seleccionar archivos de texto.
-     *
+     * Crea un ActionListener para abrir un cuadro de diálogo de selección de archivos.
      * @return ActionListener para manejar el evento de selección de archivo.
      */
-   private ActionListener createFileChooserListener() {
-    return (ActionEvent e) -> {
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt", "text", "in", "out");
-        fileChooser.setFileFilter(filter);
+    private ActionListener createFileChooserListener() {
+        return e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt", "text", "in", "out");
+            fileChooser.setFileFilter(filter);
 
-        int resultado = fileChooser.showOpenDialog(null);
-        if (resultado == JFileChooser.APPROVE_OPTION) {
-            archivoSeleccionado = fileChooser.getSelectedFile().getAbsolutePath();
-            controlador.archivoSeleccionado(archivoSeleccionado); // Notifica al controlador
-          //  System.out.println("Archivo seleccionado: " + archivoSeleccionado);
-        }
-    };
-}
-
+            int resultado = fileChooser.showOpenDialog(null);
+            if (resultado == JFileChooser.APPROVE_OPTION) {
+                archivoSeleccionado = fileChooser.getSelectedFile().getAbsolutePath();
+                controlador.archivoSeleccionado(archivoSeleccionado);
+            }
+        };
+    }
 
     /**
-     * Devuelve la ruta del archivo seleccionado.
-     *
-     * @return La ruta del archivo seleccionado como String.
+     * Obtiene la ruta del archivo seleccionado.
+     * @return Ruta del archivo seleccionado.
      */
     public String getArchivoSeleccionado() {
         return archivoSeleccionado;

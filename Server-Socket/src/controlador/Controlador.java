@@ -1,78 +1,57 @@
 package controlador;
 
-import mundo.LWZ;
 import vista.PanelSeleccionar;
 import vista.PanelText;
-
 import javax.swing.*;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import mundo.ReadText;
 
+
+/**
+ * Controlador es responsable de iniciar el servidor y manejar la lógica de compresión y envío de datos.
+ */
 public class Controlador {
 
     private PanelSeleccionar pnlSeleccionar;
     private PanelText pnlText;
     private String archivoSeleccionado;
 
+    /**
+     * Constructor del Controlador.
+     * Inicia el servidor y conecta el panel de selección con la lógica del controlador.
+     * @param pnlSeleccionar Panel de selección de archivos.
+     * @param pnlText Panel donde se muestra la compresión en progreso.
+     */
     public Controlador(PanelSeleccionar pnlSeleccionar, PanelText pnlText) {
         this.pnlSeleccionar = pnlSeleccionar;
-        this.pnlSeleccionar.setControlador(this); // Inyectar el controlador en el panel
+        this.pnlSeleccionar.setControlador(this);
         this.pnlText = pnlText;
-        iniciarServidor(); 
-    
+        iniciarServidor();
     }
 
-    // Método llamado desde el PanelSeleccionar cuando se elige un archivo
+    /**
+     * Guarda la ruta del archivo seleccionado.
+     * @param archivo Ruta del archivo seleccionado.
+     */
     public void archivoSeleccionado(String archivo) {
         this.archivoSeleccionado = archivo;
     }
 
-    
+    /**
+     * Inicia el servidor y espera conexiones de clientes.
+     */
     private void iniciarServidor() {
         new Thread(() -> {
             try (ServerSocket serverSocket = new ServerSocket(5000)) {
                 System.out.println("Servidor iniciado en el puerto 5000...");
-
                 while (true) {
                     Socket clientSocket = serverSocket.accept();
-                    new Thread(() -> manejarCliente(clientSocket)).start();
+                    new Thread(new ClientHandler(clientSocket, archivoSeleccionado, pnlText)).start();
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Error al iniciar el servidor: " + e.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }).start();
-    }
-
-    private void manejarCliente(Socket clientSocket) {
-        try (ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream())) {
-            if (archivoSeleccionado != null) {
-                LWZ lwz = new LWZ();
-                ArrayList<Character> list = new ReadText(archivoSeleccionado).leerArchivo(archivoSeleccionado);
-                lwz.initializeDictionary();
-
-                for (char se : list) {
-                    int code = lwz.compress3(se);
-                    if (code != -1) {
-                        out.writeObject(code);
-                        pnlText.addMessage(code);
-                        Thread.sleep(1000);       
-                    }
-                }
-
-                int lastCode = LWZ.getFinalCode();
-                if (lastCode != -1) {
-                    out.writeObject(lastCode);
-                    pnlText.addMessage(lastCode);
-                    pnlText.limpiar();
-                }
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al manejar el cliente: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 }
